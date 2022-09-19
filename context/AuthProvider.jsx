@@ -40,7 +40,7 @@ export const AuthProvider = ({children}) => {
   }
 
   /* 회원가입 */
-  const signup = async () => {
+  const signup = async (email, password) => {
     try{
         await auth().createUserWithEmailAndPassword(email, password)
                     .then(()=>{
