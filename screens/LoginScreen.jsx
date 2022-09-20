@@ -43,9 +43,8 @@ const LoginScreen = ({navigation}) => {
                         />
                 </KeyboardAvoidingView>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{}}>
                     <Text 
-                        onPress={()=>{}} 
                         style={sty.forgotPasswordText}>
                         비밀번호를 잊어버리셨나요?
                     </Text>
@@ -91,13 +90,6 @@ const LoginScreen = ({navigation}) => {
                     src={require('../assets/twitter.png')}
                     color='#ffffff'
                 />
-
-{/* <TouchableOpacity
-    style={sty.forgotButton}
-    onPress={()=>{}}
->
-    <Text>비밀번호를 잃어버리셨나요?</Text>
-</TouchableOpacity> */}
 
             </ScrollView>
         </SafeAreaView>
