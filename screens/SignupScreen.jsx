@@ -1,92 +1,114 @@
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native'
-import React from 'react'
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native'
+import React, {useState, useContext} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation } from '@react-navigation/native'
+import { AuthContext } from '../context/AuthProvider'
 
-const SignupScreen = () => {
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
-  const navigation = useNavigation();
-  const handleSignup = () => {
-    navigation.navigate('Signup');
-  }
+import FormButton from '../component/FormButton'
+import FormInput from '../component/FormInput'
+import SocialButton from '../component/SocialButton'
 
-//   if(initializing) return null;
+const SignupScreen = ({navigation}) => {
 
-//   if(!user){
-//         return (
-//             <SafeAreaView>
-//                 <Text>SignupScreen</Text>
-//                 <Button onPress={handleSignup} title='회원가입' color='#1553a3' />
-//             </SafeAreaView>
-//         )
-//   }
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [repassword, setRepassword] = useState();
+
+  const {signup} = useContext(AuthContext);
 
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={sty.container}>
-            <View style={[sty.row, sty.titleContainer]}>
-                <Image source={require('../assets/images/heels.png')}
-                       style={{width:40,height:24,marginTop:7}} />
-                <Text style={sty.titleText}>회원가입</Text>
-            </View>
-            
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                    <View style={sty.label}>
-                        <Text>이름</Text>
-                    </View>
-                    <TextInput 
-                        type='text'
-                        placeholder='name'
-                        style={sty.input}
-                    />
-                    <View style={sty.label}>
-                        <Text>이메일</Text>
-                    </View>
-                    <TextInput 
-                        type='email'
-                        placeholder='email'
-                        style={sty.input}
-                    />
-                    <View style={sty.label}>
-                        <Text>비밀번호</Text>
-                    </View>
-                    <TextInput 
-                        type='password'
-                        placeholder='name'
-                        style={sty.input}
-                    />
-                    <View style={sty.label}>
-                        <Text>별명</Text>
-                    </View>
-                    <TextInput 
-                        type='text'
-                        placeholder='name'
-                        style={sty.input}
-                    />
-                    <View style={sty.label}>
-                        <Text>생일</Text>
-                    </View>
-                    <TextInput 
-                        type='text'
-                        placeholder='name'
-                        style={sty.input}
-                    />
-                    <View style={sty.label}>
-                        <Text>뭐지</Text>
-                    </View>
-                    <TextInput 
-                        type='text'
-                        placeholder='name'
-                        style={sty.input}
-                    />
-            </KeyboardAvoidingView>
-                    
+            <ScrollView>
+                <View style={[sty.row, sty.titleContainer]}>
+                    <Image source={require('../assets/heels.png')}
+                        style={{width:40,height:24,marginTop:7}} />
+                    <Text style={sty.titleText}>회원가입</Text>
+                </View>
+                
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                        <View style={sty.inputContainer}>
+                            <View style={sty.label}>
+                                <Text>이메일</Text>
+                            </View>
+                            <TextInput 
+                                type='email'
+                                onChangeText={(text)=>setEmail(text)}
+                                placeholder='email'
+                                style={sty.input}
+                            />
+                        </View>
+                        
+                        <View style={sty.inputContainer}>
+                            <View style={sty.label}>
+                                <Text>비밀번호</Text>
+                            </View>
+                            <TextInput 
+                                type='password'
+                                onChangeText={(text)=>setPassword(text)}
+                                placeholder='password'
+                                style={sty.input}
+                                secureTextEntry={true}
+                            />
+                        </View>
+                        
+                        <View style={sty.inputContainer}>
+                            <View style={sty.label}>
+                                <Text>비밀번호 확인</Text>
+                            </View>
+                            <TextInput 
+                                type='password'
+                                onChangeText={(text)=>setRepassword(text)}
+                                placeholder='confirm password'
+                                style={sty.input}
+                                secureTextEntry={true}
+                            />
+                        </View>
 
-            <TouchableOpacity style={sty.emailLoginContainer}>
-                <Text>회원가입</Text>
-            </TouchableOpacity>            
+                        {/* <View style={sty.inputContainer}>
+                            <View style={sty.label}>
+                                <Text>이름</Text>
+                            </View>
+                            <TextInput 
+                                type='text'
+                                placeholder='name'
+                                style={sty.input}
+                            />
+                        </View>
+
+                        <View style={sty.inputContainer}>
+                            <View style={sty.label}>
+                                <Text>성별</Text>
+                            </View>
+                            <TextInput 
+                                type='text'
+                                placeholder='gender'
+                                style={sty.input}
+                            />
+                        </View>
+
+                        <View style={sty.inputContainer}>
+                            <View style={sty.label}>
+                                <Text>전화번호</Text>
+                            </View>
+                            <TextInput 
+                                type='text'
+                                placeholder='mobile'
+                                style={sty.input}
+                            />
+                        </View> */}
+                </KeyboardAvoidingView>
+                        
+
+                <TouchableOpacity
+                    onPress={()=>signup(email, password)}
+                    style={sty.buttonContainer}>
+                    <Text>회원가입</Text>
+                </TouchableOpacity>  
+            </ScrollView>          
         </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -96,6 +118,7 @@ const sty = StyleSheet.create({
     container:{
         flex:1,
         paddingHorizontal:30,
+        backgroundColor:'#f2f2f2'
     },
     titleContainer:{
         justifyContent:'center',
@@ -106,10 +129,19 @@ const sty = StyleSheet.create({
         fontSize:30,
         marginLeft:3
     },
+    inputContainer:{
+        position:'relative',
+        paddingVertical:5
+    },
     label:{
         flex:1,
         position: 'absolute',
-        alignSelf:'center'
+        left:10,
+        top:-4,
+        alignSelf:'center',
+        backgroundColor:'#f2f2f2',
+        zIndex:10,
+        paddingHorizontal:5
     },
     input:{
         height:60,
@@ -121,19 +153,23 @@ const sty = StyleSheet.create({
         paddingHorizontal:10,
         fontSize:20
     },
-    emailLoginContainer:{
+    buttonContainer:{
         backgroundColor:'#B7E49F',
         height:50,
         borderRadius:9,
         justifyContent:'center',
         alignItems:'center',
-        marginTop:10,
+        marginTop:20,
+        marginBottom:25,
         elevation:2
     }
 
-
     ,row:{
         flexDirection:'row'
+    },
+    any:{
+        color:'#2e64e5',
+        marginTop:25
     }
 })
 

@@ -1,26 +1,30 @@
 import {TouchableOpacity, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 
-export const FormButton = ({buttonTitle, bgColor, ...rest}) => {
+export const FormButton = ({buttonTitle, backgroundColor, ...rest}) => {
     return (
-        <TouchableOpacity style={[sty.button, {backgroundColor: bgColor}]} {...rest}>
-            <Text>{buttonTitle}</Text>
+        <TouchableOpacity 
+            style={[sty.buttonContainer, {backgroundColor: backgroundColor}]} 
+            {...rest}>
+                <Text>{buttonTitle}</Text>
         </TouchableOpacity>
     )
 }
 
-// export const FormButtonWithImage = ({buttonTitle, bgColor, socialMedia, ...rest}) => {
-//     return (
-//         <TouchableOpacity style={[sty.button, sty.row, {backgroundColor: bgColor}]}>
-//             <Image source={require(`/assets/${socialMedia}.png`)}
-//                 style={sty.icon} />
-//             <Text>{buttonTitle}</Text>
-//         </TouchableOpacity>
-//     )
-// }
+export const FormButtonWithImage = ({buttonTitle, backgroundColor, src, color, ...rest}) => {
+    return (
+        <TouchableOpacity 
+            style={[sty.buttonContainer, sty.row, {backgroundColor: backgroundColor}]}
+            {...rest}>
+                <Image source={src}
+                       style={sty.icon} />
+                <Text style={{color:color}}>{buttonTitle}</Text>
+        </TouchableOpacity>
+    )
+}
 
 const sty = StyleSheet.create({
-    button:{
+    buttonContainer:{
         height:50,
         borderRadius:9,
         justifyContent:'center',
@@ -28,12 +32,13 @@ const sty = StyleSheet.create({
         marginTop:10,
         elevation:2
     },
-    row:{
-        flexDirection:'row'
-    },
     icon:{
         height:20,
         width:20,
         marginRight:3
+    }
+
+    ,row:{
+        flexDirection:'row'
     }
 })
