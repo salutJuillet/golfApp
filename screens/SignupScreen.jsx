@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView, Alert } from 'react-native'
 import React, {useState, useContext} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthProvider'
+import { validateEmail, removeWhitespace } from '../utils/Validate'
 
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
@@ -16,6 +17,34 @@ const SignupScreen = ({navigation}) => {
   const [repassword, setRepassword] = useState();
 
   const {signup} = useContext(AuthContext);
+
+  const handleSignup = () => {
+    if(email) {
+        const changeEmail = removeWhitespace(email);
+        if(validateEmail(changeEmail)){
+            console.log(validateEmail(changeEmail));
+            Alert.alert('올바른 형식의 이메일을 입력하세요.');
+            return
+        }
+    }else{
+        Alert.alert('이메일을 입력하세요.');
+        return
+    }
+
+    if(!password){
+        Alert.alert('비밀번호를 입력하세요.');
+        return
+    }
+    if(!repassword) {
+        Alert.alert('비밀번호를 다시 확인해주세요.');
+        return
+    }
+    if(password !== repassword) {
+        Alert.alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+        return
+    }
+    signup(email, password);
+  }
 
 
   return (
@@ -104,7 +133,7 @@ const SignupScreen = ({navigation}) => {
                         
 
                 <TouchableOpacity
-                    onPress={()=>signup(email, password)}
+                    onPress={handleSignup}
                     style={sty.buttonContainer}>
                     <Text>회원가입</Text>
                 </TouchableOpacity>  

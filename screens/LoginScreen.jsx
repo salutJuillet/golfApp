@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView, Alert } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthProvider'
@@ -6,11 +6,35 @@ import { AuthContext } from '../context/AuthProvider'
 import {FormButton, FormButtonWithImage} from '../component/FormButton'
 import {FormInput} from '../component/FormInput'
 
+import { validateEmail, removeWhitespace } from '../utils/Validate'
+
 const LoginScreen = ({navigation}) => {
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  
   const {signin} = useContext(AuthContext);
+
+  const handleLogin = () => {
+    if(email) {
+        const changeEmail = removeWhitespace(email);
+        if(!validateEmail(changeEmail)){
+            Alert.alert('올바른 형식의 이메일을 입력하세요.');
+            return
+        }
+
+        
+    }else{
+        Alert.alert('이메일을 입력하세요.');
+        return
+    }
+    
+    if(!password){
+        Alert.alert('비밀번호를 입력하세요.');
+        return
+    }
+    signin(email, password);
+  } 
 
 
   return (
@@ -52,7 +76,7 @@ const LoginScreen = ({navigation}) => {
 
                 <FormButton
                     buttonTitle='로그인'
-                    onPress={()=>signin(email, password)}
+                    onPress={handleLogin}
                     backgroundColor='#B7E49F'
                 />
 
