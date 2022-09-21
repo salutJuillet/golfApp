@@ -75,6 +75,7 @@ const ProfileStack = ({navigation}) => {
 
 const AppStack = () => {
 
+  /* 특정 페이지에서는 bottom tab이 보이지 않도록 하는 함수 */
   const getTabBarVisibility = (route) => {
     const routeName = route.state
                       ? route.state.routes[route.state.index].name
