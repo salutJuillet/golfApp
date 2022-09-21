@@ -2,6 +2,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { View } from 'react-native'
 
 import HomeScreen from '../screens/HomeScreen'
 import MessagesScreen from '../screens/MessagesScreen'
@@ -18,22 +19,13 @@ const FeedStack = ({navigation}) => {
         name='Home'
         component={HomeScreen}
         options={{
-          headerTitleAlign:'center',
-          headerTitleStyle:{
-            fontWeight:'bold',
-            fontSize:18
-          },
-          headerStyle:{
-            backgroundColor:'#B7E49F',
-            elevation:2
-          },
           headerRight:()=>(
             <View style={{marginTop:10}}>
               <AntDesign.Button 
                   name='pluscircle'
                   size={22}
                   color='#ffffff'
-                  onPress={()=>navigation.navigate('Board')}
+                  onPress={()=>navigation.navigate('Nothing')}
               />
             </View>
           )
@@ -98,7 +90,17 @@ const AppStack = () => {
 
   return (
     <Tab.Navigator
-        screenOptions={{tabBarActiveTintColor: '#81c25f'}}
+        screenOptions={{
+          tabBarActiveTintColor: '#81c25f',
+          headerTitleAlign:'center',
+          headerTitleStyle:{
+            fontSize:18,
+            color:'#333333'
+          },
+          headerStyle:{
+            backgroundColor:'#B7E49F',
+            elevation:2          }
+        }}
     >
       <Tab.Screen 
           name='Home' 
