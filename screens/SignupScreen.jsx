@@ -21,7 +21,7 @@ const SignupScreen = ({navigation}) => {
   const handleSignup = () => {
     if(email) {
         const changeEmail = removeWhitespace(email);
-        if(validateEmail(changeEmail)){
+        if(!validateEmail(changeEmail)){
             console.log(validateEmail(changeEmail));
             Alert.alert('올바른 형식의 이메일을 입력하세요.');
             return
@@ -52,7 +52,7 @@ const SignupScreen = ({navigation}) => {
         <SafeAreaView style={sty.container}>
             <ScrollView>
                 <View style={[sty.row, sty.titleContainer]}>
-                    <Image source={require('../assets/heels.png')}
+                    <Image source={require('../assets/images/heels.png')}
                         style={{width:40,height:24,marginTop:7}} />
                     <Text style={sty.titleText}>회원가입</Text>
                 </View>

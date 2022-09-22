@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { View } from 'react-native'
 
 import HomeScreen from '../screens/HomeScreen'
+import BoardScreen from '../screens/BoardScreen'
 import MessagesScreen from '../screens/MessagesScreen'
 import ChatScreen from '../screens/ChatScreen'
 import ProfileScreen from '../screens/ProfileScreen'
@@ -13,35 +14,57 @@ import EditProfileScreen from '../screens/EditProfileScreen'
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const FeedStack = ({navigation}) => {
-  <Stack.Navigator>
+const FeedStack = ({navigation}) => (
+  <Stack.Navigator 
+      screenOptions={{
+        headerStyle:{
+          backgroundColor:'#B7E49F',
+        },
+        headerTitleAlign:'center',
+        headerTitleStyle:{
+          color:'#333',
+          fontSize:18
+        }
+      }}>
     <Stack.Screen
         name='Home'
         component={HomeScreen}
         options={{
           headerRight:()=>(
-            <View style={{marginTop:10}}>
-              <AntDesign.Button 
+            <View style={{marginRight:15}}>
+              <AntDesign
                   name='pluscircle'
                   size={22}
-                  color='#ffffff'
-                  onPress={()=>navigation.navigate('Nothing')}
+                  color='#333'
+                  onPress={()=>navigation.navigate('Board')}
               />
             </View>
           )
         }}
     />
+    <Stack.Screen
+        name='Board'
+        component={BoardScreen}
+    />
   </Stack.Navigator>
-}
+)
 
-const MessageStack = ({navigation}) => {
-  <Stack.Navigator>
+const MessageStack = ({navigation}) => (
+  <Stack.Navigator
+      screenOptions={{
+        headerStyle:{
+          backgroundColor:'#B7E49F',
+        },
+        headerTitleAlign:'center',
+        headerTitleStyle:{
+          color:'#333',
+          fontSize:18
+        }
+      }}
+  >
     <Stack.Screen
         name='Messages'
         component={MessagesScreen}
-        options={{
-          headerShown: false
-        }}
     />
     <Stack.Screen
         name='Chat'
@@ -52,16 +75,24 @@ const MessageStack = ({navigation}) => {
         })}
     />
   </Stack.Navigator>
-}
+)
 
-const ProfileStack = ({navigation}) => {
-  <Stack.Navigator>
+const ProfileStack = ({navigation}) => (
+  <Stack.Navigator
+      screenOptions={{
+        headerStyle:{
+          backgroundColor:'#B7E49F',
+        },
+        headerTitleAlign:'center',
+        headerTitleStyle:{
+          color:'#333',
+          fontSize:18
+        }
+      }}
+  >
     <Stack.Screen
         name='Profile'
         component={ProfileScreen}
-        options={{
-          headerShown: false
-        }}
     />
     <Stack.Screen
         name='EditProfile'
@@ -71,9 +102,9 @@ const ProfileStack = ({navigation}) => {
         }}
     />
   </Stack.Navigator>
-}
+)
 
-const AppStack = () => {
+const AppStack = ({navigation}) => {
 
   /* 특정 페이지에서는 bottom tab이 보이지 않도록 하는 함수 */
   const getTabBarVisibility = (route) => {
@@ -93,18 +124,11 @@ const AppStack = () => {
     <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: '#81c25f',
-          headerTitleAlign:'center',
-          headerTitleStyle:{
-            fontSize:18,
-            color:'#333333'
-          },
-          headerStyle:{
-            backgroundColor:'#B7E49F',
-            elevation:2          }
+          // headerShown: false
         }}
     >
       <Tab.Screen 
-          name='Home' 
+          name='FeedStack' 
           component={FeedStack}
           options={({route})=>({
             tabBarIcon:({color, size}) => (
@@ -117,7 +141,7 @@ const AppStack = () => {
           })}
       />
       <Tab.Screen 
-          name='Messages' 
+          name='MessageStack' 
           component={MessageStack}
           options={({route})=>({
             tabBarVisible: getTabBarVisibility(route),
@@ -131,7 +155,7 @@ const AppStack = () => {
           })}
       />
       <Tab.Screen 
-          name='Profile' 
+          name='ProfileStack' 
           component={ProfileStack}
           options={({route})=>({
             tabBarIcon:({color, size}) => (
