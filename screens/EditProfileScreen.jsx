@@ -2,6 +2,7 @@ import {
   StyleSheet, 
   Text, 
   View, 
+  ScrollView,
   TouchableOpacity, 
   Alert, 
   ImageBackground, 
@@ -118,7 +119,7 @@ const EditProfileScreen = ({navigation, route}) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={sty.container}>
+      <ScrollView style={sty.container}>
         <BottomSheet
             ref={this.bs}
             snapPoints={[330, -15]}
@@ -169,73 +170,73 @@ const EditProfileScreen = ({navigation, route}) => {
         </View>
 
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-        <View style={sty.actioninputContainer}>
-          <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-          <TextInput
-              value={fname}
-              onChangeText={(text)=>setUserData({...userData, fname: text})}
-              placeholder='닉네임'
-              placeholderTextColor='#999'
-              autoCorrect={false}
-              style={sty.textInput}
-          />
-        </View>
-
-        <View style={sty.actioninputContainer}>
-          <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-          <View style={sty.gender}>
-            <Text style={[!gender ? {fontWeight:'bold'} : '', {fontSize:18,color:'#999'}]}>여자</Text>
-              <Switch
-                  trackColor={{false:'#81c25f', true:'#B7E49F'}}
-                  thumbColor={gender && '#f4f4f4'}
-                  ios_backgroundColor='#3e3e3e'
-                  onValueChange={toggleSwitch}
-                  value={gender}
-              />
-            <Text style={[gender ? {fontWeight:'bold'} : '', {fontSize:18,color:'#999'}]}>남자</Text>
+          <View style={sty.actioninputContainer}>
+            <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+            <TextInput
+                value={fname}
+                onChangeText={(text)=>setUserData({...userData, fname: text})}
+                placeholder='닉네임'
+                placeholderTextColor='#999'
+                autoCorrect={false}
+                style={sty.textInput}
+            />
           </View>
-        </View>
 
-        <View style={sty.actioninputContainer}>
-          <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-          <TextInput
-              value={age}
-              onChangeText={(text)=>setUserData({...userData, age: text})}
-              placeholder='나이'
-              placeholderTextColor='#999'
-              autoCorrect={false}
-              style={sty.textInput}
-              keyboardType='numeric'
-          />
-        </View>
+          <View style={sty.actioninputContainer}>
+            <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+            <View style={sty.gender}>
+              <Text style={[!gender ? {fontWeight:'bold'} : '', {fontSize:18,color:'#999'}]}>여자</Text>
+                <Switch
+                    trackColor={{false:'#81c25f', true:'#B7E49F'}}
+                    thumbColor={gender && '#f4f4f4'}
+                    ios_backgroundColor='#3e3e3e'
+                    onValueChange={toggleSwitch}
+                    value={gender}
+                />
+              <Text style={[gender ? {fontWeight:'bold'} : '', {fontSize:18,color:'#999'}]}>남자</Text>
+            </View>
+          </View>
 
-        <View style={sty.actioninputContainer}>
-          <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-          <TextInput
-              value={tel}
-              onChangeText={(text)=>setUserData({...userData, tel: text})}
-              placeholder='전화번호'
-              placeholderTextColor='#999'
-              autoCorrect={false}
-              style={sty.textInput}
-              keyboardType='numeric'
-          />
-        </View>
+          <View style={sty.actioninputContainer}>
+            <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+            <TextInput
+                value={age}
+                onChangeText={(text)=>setUserData({...userData, age: text})}
+                placeholder='나이'
+                placeholderTextColor='#999'
+                autoCorrect={false}
+                style={sty.textInput}
+                keyboardType='numeric'
+            />
+          </View>
 
-        <View style={sty.actioninputContainer}>
-          <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-          <TextInput
-              value={average}
-              onChangeText={(text)=>setUserData({...userData, average: text})}
-              placeholder='평균타수'
-              placeholderTextColor='#999'
-              autoCorrect={false}
-              style={sty.textInput}
-              keyboardType='numeric'
-          />
-        </View>
+          <View style={sty.actioninputContainer}>
+            <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+            <TextInput
+                value={tel}
+                onChangeText={(text)=>setUserData({...userData, tel: text})}
+                placeholder='전화번호'
+                placeholderTextColor='#999'
+                autoCorrect={false}
+                style={sty.textInput}
+                keyboardType='numeric'
+            />
+          </View>
+
+          <View style={sty.actioninputContainer}>
+            <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+            <TextInput
+                value={average}
+                onChangeText={(text)=>setUserData({...userData, average: text})}
+                placeholder='평균타수'
+                placeholderTextColor='#999'
+                autoCorrect={false}
+                style={sty.textInput}
+                keyboardType='numeric'
+            />
+          </View>
         </KeyboardAvoidingView>
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   )
 }
@@ -245,7 +246,7 @@ export default EditProfileScreen
 const sty = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor:'#f2f2f2'
+    backgroundColor:'#f2f2f2',
   },
   commandButton:{
     padding:15,
@@ -302,8 +303,8 @@ const sty = StyleSheet.create({
     color:'#fff'
   },
   iconImage:{
-    width:40,
-    height:24,
+    width:30,
+    height:16,
     marginTop:5
   },
   actioninputContainer:{

@@ -2,7 +2,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { View } from 'react-native'
+import { View, TouchableOpacity, Text } from 'react-native'
 
 import HomeScreen from '../screens/HomeScreen'
 import BoardScreen from '../screens/BoardScreen'
@@ -98,7 +98,23 @@ const ProfileStack = ({navigation}) => (
         name='EditProfile'
         component={EditProfileScreen}
         options={{
-          headerTitle: '프로필 수정'
+          headerTitle: '프로필 수정',
+          headerRight:()=>(
+            <TouchableOpacity 
+                onPress={()=>{}} 
+                style={{
+                  marginRight:15, 
+                  backgroundColor:'#fff', 
+                  color:'#333',
+                  borderRadius:5,
+                  paddingVertical:4,
+                  paddingHorizontal:6,
+                  elevation:1
+                }}
+            >
+              <Text>저장</Text>
+            </TouchableOpacity>
+          )
         }}
     />
   </Stack.Navigator>
