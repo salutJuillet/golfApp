@@ -37,7 +37,7 @@ const EditProfileScreen = ({navigation, route}) => {
   const {user, logout} = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
-
+  const [transfered, setTransfered] = useState(0);
   const [userData, setUserData] = useState({
     age:0,
     average:0,
@@ -51,14 +51,85 @@ const EditProfileScreen = ({navigation, route}) => {
   /* 회원정보 가져오기 */
   const getUser = async () => {
     await firestore().collection('members')
-                      .doc(route.params ? route.params.email : user.uid)
-                      .get()
-                      .then((res) => {
+                     .doc(route.params ? route.params.email : user.uid)
+                     .get()
+                     .then((res) => {
                         //  console.log(res.data());
                         if(res.exists){
                           setUserData(res.data());
                         }
-                      })
+                     })
+  }
+
+  const uploadImage = async () => {
+    if(image === null) {
+      return null;
+    }
+    const uploadUri = image;
+    let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+    //파일 이름에 날짜를 추가해서 파일 이름 수정
+    const extension = filename.split('.').pop(); //확장자 추출
+    const fname = filename.split('.').slice(0, -1).join('.');
+    filename = fname + Date.now() + '.' + extension;
+
+    setUploading(true);
+    setTransfered(0);
+
+    const storageRef = storage().ref(`members/${filename}`);
+    
+    //업로딩 카운트
+    const task = storageRef.putFile(uploadUri);
+    task.on('state_changed', (taskSnapshot) => {
+      console.log(`${taskSnapshot.bytesTransferred} transfered out of ${taskSnapshot}.totalBytes`);
+
+      setTransfered(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+      );
+    });
+
+    try{
+      await task;
+      const url = await storageRef.getDownloadURL();
+      setUploading(false);
+      setImage(null);
+      return url;
+    }catch(e){
+      console.log(e);
+      return null;
+    }   
+  }
+
+  const handleUpdate = async () => {
+    let imgUrl = await uploadImage();
+    if(imgUrl === null && userImg) {
+      imgUrl = userImg;
+    }
+
+    firestore()
+    .collection('members')
+    .doc(user.uid)
+    .update({
+      age: userData.age,
+      average: userData.average,
+      fname: userData.fname,
+      gender: userData.gender,
+      tel: userData.tel,
+      userImg: imgUrl
+    })
+    .then(()=>{
+      Alert.alert(
+        '프로필이 업데이트 되었습니다.',
+        [
+          {
+            text:'확인',
+            onPress: ()=>{
+              navigation.native('Profile');
+            }
+          }
+        ]
+      )
+    })
   }
 
   const toggleSwitch = () =>{
@@ -105,7 +176,7 @@ const EditProfileScreen = ({navigation, route}) => {
       </View>
       <TouchableOpacity
           style={sty.panelButton}
-          onPress={()=>setImage('')}
+          onPress={()=>setImage(null)}
       >
         <Text style={sty.panelButtonTitle}>기본 이미지로</Text>
       </TouchableOpacity>
@@ -144,6 +215,10 @@ const EditProfileScreen = ({navigation, route}) => {
   const { age, average, email, fname, gender, tel, userImg } = userData;
 
 
+  const genderStyles = [{fontSize:18, color:'#333'}, {fontSize:18, color:'#999'}];
+  
+
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <>
@@ -156,7 +231,7 @@ const EditProfileScreen = ({navigation, route}) => {
               callbackNode={this.fall}
               endabledGestureInteraction={true}
         />
-        <ScrollView style={sty.container}>
+        <ScrollView style={sty.container} showsVerticalScrollIndicator={false}>
           
           <Animated.View
               style={sty.animated}
@@ -174,13 +249,13 @@ const EditProfileScreen = ({navigation, route}) => {
                 >
                   <ImageBackground
                       source={{
-                        uri: image ? image : userData ? userImg || 'https://firebasestorage.googleapis.com/v0/b/my-app-12524.appspot.com/o/members%2Floading.png?alt=media&token=e8e03897-0d43-4924-bdae-70eb97009604' : 'https://firebasestorage.googleapis.com/v0/b/my-app-12524.appspot.com/o/members%2Floading.png?alt=media&token=e8e03897-0d43-4924-bdae-70eb97009604' 
+                        uri: image ? image : userData ? userImg || 'https://firebasestorage.googleapis.com/v0/b/my-app-12524.appspot.com/o/members%2Fdefault_profile.jpg?alt=media&token=6d30819b-1924-4335-8a8a-a923f4c43fa8' : 'https://firebasestorage.googleapis.com/v0/b/my-app-12524.appspot.com/o/members%2Fdefault_profile.jpg?alt=media&token=6d30819b-1924-4335-8a8a-a923f4c43fa8' 
                       }}
-                      style={{width:100, height:100, borderRadius:15, backgroundColor:'#B7E49F',}}
+                      style={{width:100, height:100}}
                       imageStyle={{borderRadius:15}}
                   >
                     <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
-                      { image ? '' : <AntDesign 
+                      { userImg ? '' : <AntDesign 
                                         name='camera' 
                                         size={35} 
                                         color='#fff' 
@@ -204,73 +279,74 @@ const EditProfileScreen = ({navigation, route}) => {
             </View>
 
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{paddingHorizontal:30}}>
-              <View style={sty.actioninputContainer}>
-                <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-                <TextInput
-                    value={fname}
-                    onChangeText={(text)=>setUserData({...userData, fname: text})}
-                    placeholder='닉네임'
-                    placeholderTextColor='#999'
-                    autoCorrect={false}
-                    style={sty.textInput}
-                />
-              </View>
+              <View style={{marginBottom:30}}>
+                <View style={sty.actioninputContainer}>
+                  <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+                  <TextInput
+                      value={fname}
+                      onChangeText={(text)=>setUserData({...userData, fname: text})}
+                      placeholder='닉네임'
+                      placeholderTextColor='#999'
+                      autoCorrect={false}
+                      style={sty.textInput}
+                  />
+                </View>
 
-              <View style={sty.actioninputContainer}>
-                <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-                <View style={sty.gender}>
-                  <Text style={[!gender ? {fontWeight:'bold'} : '', {fontSize:18,color:'#999'}]}>여자</Text>
-                    <Switch
-                        trackColor={{false:'#81c25f', true:'#B7E49F'}}
-                        thumbColor={gender && '#f4f4f4'}
-                        ios_backgroundColor='#3e3e3e'
-                        onValueChange={toggleSwitch}
-                        value={gender}
-                    />
-                  <Text style={[gender ? {fontWeight:'bold'} : '', {fontSize:18,color:'#999'}]}>남자</Text>
+                <View style={sty.actioninputContainer}>
+                  <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+                  <View style={sty.gender}>
+                    <Text style={gender ? genderStyles.pop() : genderStyles.shift()}>여자</Text>
+                      <Switch
+                          trackColor={{false:'#81c25f', true:'#B7E49F'}}
+                          thumbColor={gender && '#f4f4f4'}
+                          onValueChange={toggleSwitch}
+                          value={gender}
+                      />
+                    <Text style={gender ? genderStyles.pop() : genderStyles.shift()}>남자</Text>
+                  </View>
+                </View>
+
+                <View style={sty.actioninputContainer}>
+                  <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+                  <TextInput
+                      value={age}
+                      onChangeText={(text)=>setUserData({...userData, age: text})}
+                      placeholder='나이'
+                      placeholderTextColor='#999'
+                      autoCorrect={false}
+                      style={sty.textInput}
+                      keyboardType='numeric'
+                  />
+                </View>
+
+                <View style={sty.actioninputContainer}>
+                  <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+                  <TextInput
+                      value={tel}
+                      onChangeText={(text)=>setUserData({...userData, tel: text})}
+                      placeholder='전화번호'
+                      placeholderTextColor='#999'
+                      autoCorrect={false}
+                      style={sty.textInput}
+                      keyboardType='numeric'
+                  />
+                </View>
+
+                <View style={sty.actioninputContainer}>
+                  <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
+                  <TextInput
+                      value={average}
+                      onChangeText={(text)=>setUserData({...userData, average: text})}
+                      placeholder='평균타수'
+                      placeholderTextColor='#999'
+                      autoCorrect={false}
+                      style={sty.textInput}
+                      keyboardType='numeric'
+                  />
                 </View>
               </View>
 
-              <View style={sty.actioninputContainer}>
-                <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-                <TextInput
-                    value={age}
-                    onChangeText={(text)=>setUserData({...userData, age: text})}
-                    placeholder='나이'
-                    placeholderTextColor='#999'
-                    autoCorrect={false}
-                    style={sty.textInput}
-                    keyboardType='numeric'
-                />
-              </View>
-
-              <View style={sty.actioninputContainer}>
-                <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-                <TextInput
-                    value={tel}
-                    onChangeText={(text)=>setUserData({...userData, tel: text})}
-                    placeholder='전화번호'
-                    placeholderTextColor='#999'
-                    autoCorrect={false}
-                    style={sty.textInput}
-                    keyboardType='numeric'
-                />
-              </View>
-
-              <View style={sty.actioninputContainer}>
-                <Image source={require('../assets/images/heels.png')} style={sty.iconImage} />
-                <TextInput
-                    value={average}
-                    onChangeText={(text)=>setUserData({...userData, average: text})}
-                    placeholder='평균타수'
-                    placeholderTextColor='#999'
-                    autoCorrect={false}
-                    style={sty.textInput}
-                    keyboardType='numeric'
-                />
-              </View>
-
-              <FormButton buttonTitle='저장' backgroundColor='#B7E49F' />
+              <FormButton buttonTitle='저장' backgroundColor='#B7E49F' onPress={handleUpdate} />
             </KeyboardAvoidingView>
           </Animated.View>
         </ScrollView>
