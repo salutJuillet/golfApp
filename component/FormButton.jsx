@@ -29,7 +29,7 @@ const sty = StyleSheet.create({
         borderRadius:9,
         justifyContent:'center',
         alignItems:'center',
-        marginTop:10,
+        marginVertical:30,
         elevation:2
     },
     icon:{
