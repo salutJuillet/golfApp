@@ -58,7 +58,7 @@ const ProfileScreen = ({navigation, route}) => {
     getUser();
     navigation.addListener('focus', ()=>setLoading(!loading));
   }, [navigation])
-  console.log(userData);
+  // console.log(userData);
 
   return (
     <SafeAreaView>
