@@ -136,7 +136,8 @@ const EditProfileScreen = ({navigation, route}) => {
                     width:100, 
                     borderRadius:15,
                     justifyContent:'center',
-                    alignItems:'center'
+                    alignItems:'center',
+                    marginTop:20
                   }}
             >
               <ImageBackground
