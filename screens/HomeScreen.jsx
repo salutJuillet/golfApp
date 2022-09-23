@@ -94,6 +94,7 @@ const HomeScreen = () => {
       {/* { loading ? (
         <ScrollView style={{flex:1}}
                     contentContainerStyle={{alignItems:'center'}}
+                    showsVerticalScrollIndicator={false}
         >
           <SkeletonPlaceholder>
             <View style={{flexDirection:'row', alignItems:'center'}}>

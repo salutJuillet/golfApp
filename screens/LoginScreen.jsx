@@ -40,7 +40,7 @@ const LoginScreen = ({navigation}) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={sty.container}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={[sty.row, sty.titleContainer]}>
                     <Image source={require('../assets/images/heels.png')}
                            style={{width:40,height:24,marginTop:7}} />
