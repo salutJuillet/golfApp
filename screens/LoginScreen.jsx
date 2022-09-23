@@ -42,7 +42,7 @@ const LoginScreen = ({navigation}) => {
         <SafeAreaView style={sty.container}>
             <ScrollView>
                 <View style={[sty.row, sty.titleContainer]}>
-                    <Image source={require('../assets/heels.png')}
+                    <Image source={require('../assets/images/heels.png')}
                            style={{width:40,height:24,marginTop:7}} />
                     <Text style={sty.titleText}>로그인</Text>
                 </View>
@@ -101,17 +101,17 @@ const LoginScreen = ({navigation}) => {
                 <FormButtonWithImage
                     buttonTitle='구글로 로그인'
                     backgroundColor='#ffffff'
-                    src={require('../assets/google.png')}
+                    src={require('../assets/images/google.png')}
                 />
                 <FormButtonWithImage
                     buttonTitle='카카오톡으로 로그인'
                     backgroundColor='#ffdc00'
-                    src={require('../assets/kakao.png')}
+                    src={require('../assets/images/kakao.png')}
                 />
                 <FormButtonWithImage
                     buttonTitle='트위터로 로그인'
                     backgroundColor='#00acee'
-                    src={require('../assets/twitter.png')}
+                    src={require('../assets/images/twitter.png')}
                     color='#ffffff'
                 />
 

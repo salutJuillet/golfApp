@@ -91,7 +91,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={{flex:1}}>
-      { loading ? (
+      {/* { loading ? (
         <ScrollView style={{flex:1}}
                     contentContainerStyle={{alignItems:'center'}}
         >
@@ -140,7 +140,7 @@ const HomeScreen = () => {
             />
           </Container>
         )
-      }
+      } */}
     </SafeAreaView>
   )
 }

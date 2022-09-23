@@ -48,6 +48,8 @@ export const AuthProvider = ({children}) => {
                         .set({
                             fname: '',
                             gender: '',
+                            age: 20,
+                            average: 99,
                             email: email,
                             tel: '',
                             createAt: firestore.Timestamp.fromDate(new Date()),
