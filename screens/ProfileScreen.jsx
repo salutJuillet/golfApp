@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Alert, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useState, useEffect, useContext} from 'react'
 
@@ -14,21 +14,32 @@ const ProfileScreen = ({navigation, route}) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({
+    age:0,
+    average:0,
+    email: user.uid,
+    fname:'',
+    gender:false,
+    tel:'',
+    userImg: null
+  });
 
-  const fetchPost = async () => {
-    try{ 
-      await firestore().collection('members')
-                       .where('userId', '==', route.params ? route.params.userId : user.Id)
-                       .get()
-                       .then((querySnapshot) => {
-                          console.log('Posts: ', querySnapshot)
-                       })
+  // const {age, average, email, fname, gender, tel, userImg} = userData;
 
-    }catch(e){
-      console.log(e);
-    }
-  }
+  /* where절을 이용해 userData 가져오는 방법 */
+  // const fetchPost = async () => {
+  //   try{ 
+  //     await firestore().collection('members')
+  //                      .where('userId', '==', route.params ? route.params.userId : user.Id)
+  //                      .get()
+  //                      .then((querySnapshot) => {
+  //                         console.log('Posts: ', querySnapshot.size)
+  //                      })
+
+  //   }catch(e){
+  //     console.log(e);
+  //   }
+  // }
 
   /* 회원정보 가져오기 */
   const getUser = async () => {
@@ -36,32 +47,59 @@ const ProfileScreen = ({navigation, route}) => {
                      .doc(route.params ? route.params.email : user.uid)
                      .get()
                      .then((res) => {
-                      //  console.log(res.data());
-                      const mem = res.data();
-                      if(mem.fname === '') {
-                        Alert.alert('아직 회원정보를 입력하지 않으셨습니다.\n회원정보를 입력해주세요.');
-                        navigation.navigate('EditProfile');
-                        return;
-                      }else{
-
+                       //  console.log(res.data());
+                       if(res.exists){
+                         setUserData(res.data());
                       }
                      })
   }
 
   useEffect(()=>{
     getUser();
-  }, [navigation, loading])
+    navigation.addListener('focus', ()=>setLoading(!loading));
+  }, [navigation])
+  console.log(userData);
 
   return (
-    <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
-      <ScrollView>
-        <Text>
-          유저 { userData }
-        </Text>
-        <FormButton 
-            buttonTitle='로그아웃'
-            backgroundColor='#B7E49F'
-            onPress={logout} />
+    <SafeAreaView>
+      <ScrollView style={{padding:20}} showsVerticalScrollIndicator={false}>
+        { 
+          userData.fname === '' ? (
+            <FormButton 
+              buttonTitle='프로필 수정' 
+              backgroundColor='#B7E49F'
+              onPress={()=>navigation.navigate('EditProfile')}
+            />
+          ) : (
+            <View style={sty.container}>
+              <Image source={{
+                        uri: userData ? userData.userImg : 'https://firebasestorage.googleapis.com/v0/b/my-app-12524.appspot.com/o/members%2Fdefault_profile.jpg?alt=media&token=6d30819b-1924-4335-8a8a-a923f4c43fa8'
+                     }}
+                     style={sty.userImg} 
+              />
+              <View style={sty.userInfoContainer}>
+                <Text style={sty.userInfo}>{userData && userData.email}</Text>
+                <Text style={sty.userInfo}>{userData && userData.age}</Text>
+                <Text style={sty.userInfo}>{userData && userData.fname}</Text>
+                <Text style={sty.userInfo}>{userData && userData.gender ? '남성' : '여성'}</Text>
+                <Text style={sty.userInfo}>{userData && userData.average}</Text>
+                <Text style={sty.userInfo}>{userData && userData.tel}</Text>
+              </View>
+            </View>
+          )
+        }
+
+        <FormButton
+          buttonTitle='프로필 수정'
+          backgroundColor='#B7E49F'
+          onPress={()=>navigation.navigate('EditProfile')}
+        />
+        <FormButton
+          buttonTitle='로그아웃'
+          backgroundColor='#B7E49F'
+          onPress={logout}
+        />
+        
       </ScrollView>
     </SafeAreaView>
   )
@@ -72,12 +110,18 @@ export default ProfileScreen
 const sty = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor:'#fff',
-    padding:20
+    justifyContent:'center',
+    alignItems:'center'
   },
   userImg:{
     height:180,
     width:180,
-    borderRadius:90
+    borderRadius:90,
+  },
+  userInfoContainer:{
+    marginVertical:30
+  },
+  userInfo:{
+    fontSize:22
   }
 })
