@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, ScrollView, View, Text, FlatList, Alert } from 'react-native'
+import { StyleSheet, ScrollView, View, Text, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
 
-import { Container } from '../styles/mainStyle'
+import {data} from '../tempDB/data'
+import CarouselCourse from '../component/CarouselCourse'
+import Card from '../component/Card'
+import { FlatList } from 'react-native-gesture-handler'
+
+const width = Dimensions.get('window').width;
 
 const posts = [
   {
@@ -65,15 +70,20 @@ const posts = [
   }
 ]
 
+
 const ListHeader = () => {
   return null;
 }
 
 const HomeScreen = () => {
 
-  const [posts, setPosts] = useState(null);
+  const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deleted, setDeleted] = useState(false);
+
+  useEffect(()=>{
+    setDatas(data);
+  },[]);
 
   const fetchPosts = async () => {
     try{
@@ -89,9 +99,24 @@ const HomeScreen = () => {
     }
   }
 
+  const vLists = ({item}) => (
+    <View style={{justifyContent:'center', alignItems:'center'}}>
+      <Card
+        course={item.course}
+        address={item.address}
+        membercount={item.membercount}
+        mcount={item.mcount}
+        money={item.money}
+        sdate={item.sdate}
+        edate={item.edate}
+      />
+    </View>
+  )
+
+
   return (
     <SafeAreaView style={{flex:1}}>
-      {/* { loading ? (
+      { loading ? (
         <ScrollView style={{flex:1}}
                     contentContainerStyle={{alignItems:'center'}}
                     showsVerticalScrollIndicator={false}
@@ -126,22 +151,24 @@ const HomeScreen = () => {
           </SkeletonPlaceholder>
         </ScrollView>
         ) : (
-          <Container>
-            <FlatList
-                data={posts}
-                renderItem={({item})=>(
-                  <View>
-                    {item.admin}
-                  </View>
-                )}
-                keyExtractor={({item})=>item.id}
-                showsVerticalScrollIndicator={false}
-                ListHeaderComponent={ListHeader}
-                ListFooterComponent={ListHeader}
-            />
-          </Container>
+          <View style={{
+              flex:1,
+              alignItems: 'center',
+              backgroundColor: '#ffffff'
+            }}
+          >
+            <CarouselCourse />
+            <View>
+              <FlatList
+                data={datas}
+                key={item => item.id}
+                renderItem={vLists}
+                style={{width}}
+              />
+            </View>
+          </View>
         )
-      } */}
+      }
     </SafeAreaView>
   )
 }
