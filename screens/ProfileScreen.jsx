@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Alert, Image } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useState, useEffect, useContext} from 'react'
 
@@ -6,6 +6,8 @@ import { AuthContext } from '../context/AuthProvider'
 import firestore from '@react-native-firebase/firestore'
 
 import {FormButton} from '../component/FormButton'
+
+const width = Dimensions.get('window').width;
 
 const ProfileScreen = ({navigation, route}) => {
 
@@ -78,7 +80,12 @@ const ProfileScreen = ({navigation, route}) => {
                      style={sty.userImg} 
               />
               <View style={sty.userInfoContainer}>
-                <Text style={sty.userInfo}>{userData && userData.email}</Text>
+                <View style={{flexDirection:'row', alignItems:'center', borderWidth:1}}>
+                  <Image source={require('../assets/images/heels.png')}
+                         style={sty.labelImage} />
+                  <Text style={sty.userInfo}>이메일:  {userData && userData.email}</Text>
+                </View>
+                
                 <Text style={sty.userInfo}>{userData && userData.age}</Text>
                 <Text style={sty.userInfo}>{userData && userData.fname}</Text>
                 <Text style={sty.userInfo}>{userData && userData.gender ? '남성' : '여성'}</Text>
@@ -119,9 +126,20 @@ const sty = StyleSheet.create({
     borderRadius:90,
   },
   userInfoContainer:{
-    marginVertical:30
+    marginVertical:30,
+    alignItems:'flex-start',
+    width: width - 40,
+    backgroundColor:'#fff',
+    borderRadius:8,
+    paddingVertical:15,
+    paddingHorizontal:10
+  },
+  labelImage:{
+    width:30,
+    height:16,
+    // marginRight:5
   },
   userInfo:{
-    fontSize:22
+    fontSize:22,
   }
 })

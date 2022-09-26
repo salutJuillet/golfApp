@@ -241,10 +241,11 @@ const EditProfileScreen = ({navigation, route}) => {
                 <View style={{
                         height:100, 
                         width:100, 
-                        borderRadius:15,
+                        borderRadius:50,
                         justifyContent:'center',
                         alignItems:'center',
                         marginTop:20,
+                        overflow:'hidden'
                       }}
                 >
                   <ImageBackground
