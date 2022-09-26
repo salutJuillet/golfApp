@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -11,43 +11,65 @@ import ChatScreen from '../screens/ChatScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import EditProfileScreen from '../screens/EditProfileScreen'
 
+import { AuthContext } from '../context/AuthProvider';
+
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const FeedStack = ({navigation}) => (
-  <Stack.Navigator 
-      screenOptions={{
-        headerStyle:{
-          backgroundColor:'#B7E49F',
-        },
-        headerTitleAlign:'center',
-        headerTitleStyle:{
-          color:'#333',
-          fontSize:18
-        }
-      }}>
-    <Stack.Screen
-        name='Home'
-        component={HomeScreen}
-        options={{
-          headerRight:()=>(
-            <View style={{marginRight:15}}>
-              <AntDesign
-                  name='pluscircle'
-                  size={22}
-                  color='#333'
-                  onPress={()=>navigation.navigate('Board')}
-              />
-            </View>
-          )
-        }}
-    />
-    <Stack.Screen
-        name='Board'
-        component={BoardScreen}
-    />
-  </Stack.Navigator>
-)
+const FeedStack = ({navigation}) => {
+
+  const {logout} = useContext(AuthContext);
+
+  return (
+    <Stack.Navigator 
+        screenOptions={{
+          headerStyle:{
+            backgroundColor:'#B7E49F',
+          },
+          headerTitleAlign:'center',
+          headerTitleStyle:{
+            color:'#333',
+            fontSize:18
+          }
+        }}>
+      <Stack.Screen
+          name='Home'
+          component={HomeScreen}
+          options={{
+            headerLeft:()=>(
+              <TouchableOpacity
+                style={{
+                    marginLeft:15, 
+                    backgroundColor:'#81c25f',
+                    borderRadius:6,
+                    paddingVertical:5,
+                    paddingHorizontal:5,
+                  }}
+                onPress={logout}
+                >
+                <Text style={{color:'#000'}}>로그아웃</Text>
+              </TouchableOpacity>
+            ),
+            headerRight:()=>(
+              <View style={{marginRight:15}}>
+                <AntDesign
+                    name='pluscircle'
+                    size={22}
+                    color='#333'
+                    onPress={()=>navigation.navigate('Board')}
+                />
+              </View>
+            )
+          }}
+      />
+      <Stack.Screen
+          name='Board'
+          component={BoardScreen}
+      />
+    </Stack.Navigator>
+  )
+}
 
 const MessageStack = ({navigation}) => (
   <Stack.Navigator
