@@ -6,6 +6,8 @@ import { View, TouchableOpacity, Text } from 'react-native'
 
 import HomeScreen from '../screens/HomeScreen'
 import BoardScreen from '../screens/BoardScreen'
+import DetailScreen from '../screens/DetailScreen'
+import DetailDataScreen from '../screens/DetailDataScreen';
 import MessagesScreen from '../screens/MessagesScreen'
 import ChatScreen from '../screens/ChatScreen'
 import ProfileScreen from '../screens/ProfileScreen'
@@ -66,6 +68,17 @@ const FeedStack = ({navigation}) => {
       <Stack.Screen
           name='Board'
           component={BoardScreen}
+      />
+      <Stack.Screen
+          name='Detail'
+          component={DetailScreen}
+      />
+      <Stack.Screen
+          name='DetailData'
+          component={DetailDataScreen}
+          options={{
+            headerTitle:'INFO'
+          }}
       />
     </Stack.Navigator>
   )

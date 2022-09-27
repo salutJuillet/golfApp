@@ -153,18 +153,6 @@ const CarouselCourse = () => {
                 >
                     {item.name}
                 </Text>
-                <Text style={{
-                    fontSize:16,
-                    marginHorizontal:10, 
-                    color:'#000',
-                    backgroundColor:'#ffffffbb', 
-                    borderRadius:8,
-                    paddingHorizontal:5,
-                    paddingVertical:2
-                    }}
-                >
-                    {item.content}
-                </Text>
             </ImageBackground>
         )}
       />

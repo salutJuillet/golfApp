@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, ScrollView, View, Text, Dimensions } from 'react-native'
+import { StyleSheet, ScrollView, View, Text, Dimensions, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import storage from '@react-native-firebase/storage'
@@ -75,7 +75,7 @@ const ListHeader = () => {
   return null;
 }
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
 
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -109,6 +109,12 @@ const HomeScreen = () => {
         money={item.money}
         sdate={item.sdate}
         edate={item.edate}
+
+        mastername={item.mastername}
+        member={item.member}
+        mchar={item.mchar}
+        
+        navigation={navigation}
       />
     </View>
   )
@@ -154,10 +160,34 @@ const HomeScreen = () => {
           <View style={{
               flex:1,
               alignItems: 'center',
-              backgroundColor: '#ffffff'
+              backgroundColor: '#f2f2f2'
             }}
           >
             <CarouselCourse />
+            <View 
+              style={{
+                width:'100%',
+                paddingHorizontal:20, 
+                paddingBottom:15,
+                alignItems:'flex-end'
+              }}
+            >
+              <TouchableOpacity 
+                onPress={()=>navigation.navigate('Detail', {actdate:''})}
+                style={{
+                  paddingVertical:5,
+                  paddingHorizontal:7, 
+                  backgroundColor:'#fff',
+                  borderWidth:2,
+                  borderColor:'#B7E49F',
+                  borderRadius:8,
+                  marginTop:-15,
+                  marginBottom:-10
+                }}
+              >
+                <Text>날짜별보기</Text>
+              </TouchableOpacity>
+            </View>
             <View>
               <FlatList
                 data={datas}

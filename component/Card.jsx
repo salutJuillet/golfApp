@@ -1,15 +1,33 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Dimensions } from 'react-native'
 import CardView from 'react-native-cardview'
+import moment from 'moment'
 
 const width = Dimensions.get('window').width-40;
 
-const Card = ({course, address, membercount, mcount, money, sdate, edate}) => {
+const Card = ({navigation, course, address, membercount, mcount, money, sdate, edate, mastername, member, mchar}) => {
+
+  const [dday, setDday] = useState(100); 
   
   const addr = address.split(' ');
-  const spAddr = addr[0] + addr[1];
+  const spAddr = addr[0] + ' ' + addr[1];
+  const now = moment().format('YYYY-MM-DD');
+  const actDate = sdate.substring(0, 10);
   const restNumber = parseInt(membercount) - parseInt(mcount);
+
+  const betweenDay = (fDate, sDate) => {
+    let fDateObj = new Date(fDate.substring(0,4), fDate.substring(5,7)-1, fDate.substring(8,10));
+    let sDateObj = new Date(sDate.substring(0,4), sDate.substring(5,7)-1, sDate.substring(8,10));
+    const betweenTime = Math.abs(sDateObj.getTime() - fDateObj.getTime());
+    return Math.floor(betweenTime / (1000 * 60 * 60 * 24));
+  }
+
+  useEffect(()=>{
+    setDday(betweenDay(now, actDate));
+  }, []);
+
+  let bgColor = dday < 3 ? '#ef6464' : '#00acee';
 
 
   return (
@@ -19,21 +37,35 @@ const Card = ({course, address, membercount, mcount, money, sdate, edate}) => {
         cornerRadius={15}
         style={sty.card}
     >  
-        <View style={sty.container}>
-          <View>
-            <Text style={sty.title}>{course}</Text>
-            <Text style={sty.sub}>{spAddr} | 남은 인원 ({restNumber}명)</Text>
+        <TouchableOpacity
+            onPress={()=>navigation.navigate('DetailData', {
+              course,
+              address,
+              membercount, 
+              mcount, 
+              money: money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','), 
+              sdate, 
+              edate,
+              mastername,
+              member,
+              mchar,
+              dday,
+              bgColor
+            })}
+        >
+          <View style={sty.container}>
+            <View>
+              <Text style={sty.title}>{course}</Text>
+              <Text style={sty.sub}>{spAddr} | 남은 인원 ({restNumber}명)</Text>
+            </View>
+            <View>
+              <Text style={[sty.dday, {backgroundColor: bgColor,}]}>D-{dday === 0 ? 'DAY' : dday}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={sty.new}>NEW</Text>
+          <View style={sty.footer}>
+            <Text style={sty.money}>{money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 ~ </Text>
           </View>
-        </View>
-        <View style={sty.footer}>
-          <Text style={sty.money}>{money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원 ~ </Text>
-          <TouchableOpacity>
-            <Text style={sty.buttonText}>{sdate.substring(8,10)}일 더보기</Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
     </CardView>
   )
 }
@@ -66,8 +98,7 @@ const sty = StyleSheet.create({
     fontSize:14,
     fontWeight:'600'
   },
-  new:{
-    backgroundColor:'#ef6464',
+  dday:{
     color:'#fff',
     paddingHorizontal:10,
     paddingVertical:3,
@@ -82,8 +113,8 @@ const sty = StyleSheet.create({
   money:{
     fontSize:20,
     fontWeight:'bold',
-    color:'#1E90FF',
-    // color:'#81C25F'
+    // color:'#81C25F',
+    color:'#81C25F'
   },
   buttonText:{
     fontSize:16,
