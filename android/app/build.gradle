@@ -255,11 +255,13 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-
+    implementation project(':react-native-sqlite-storage') //sqlite storage
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     
     //cardview
     implementation project(':react-native-cardview')
+
+    
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

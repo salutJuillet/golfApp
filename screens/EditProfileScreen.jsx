@@ -119,15 +119,13 @@ const EditProfileScreen = ({navigation, route}) => {
     })
     .then(()=>{
       Alert.alert(
-        '프로필이 업데이트 되었습니다.',
-        [
+        '프로필이 업데이트 되었습니다.', '',
           {
             text:'확인',
             onPress: ()=>{
               navigation.native('Profile');
             }
           }
-        ]
       )
     })
   }

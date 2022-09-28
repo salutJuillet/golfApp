@@ -8,6 +8,8 @@ if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true")
     project(":ReactAndroid").projectDir = file('../node_modules/react-native/ReactAndroid')
     include(":ReactAndroid:hermes-engine")
     project(":ReactAndroid:hermes-engine").projectDir = file('../node_modules/react-native/ReactAndroid/hermes-engine')
-    include ':react-native-cardview'
-    project(':react-native-cardview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-cardview/android')
+    include(':react-native-cardview')
+    project(':react-native-cardview').projectDir = file(rootProject.projectDir, '../node_modules/react-native-cardview/android')
+    include(':react-native-sqlite-storage')
+    project(':react-native-sqlite-storage').projectDir = file(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/platforms/android')
 }

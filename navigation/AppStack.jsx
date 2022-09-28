@@ -54,20 +54,21 @@ const FeedStack = ({navigation}) => {
               </TouchableOpacity>
             ),
             headerRight:()=>(
-              <View style={{marginRight:15}}>
+              <TouchableOpacity style={{marginRight:15}}>
                 <AntDesign
                     name='pluscircle'
                     size={22}
                     color='#333'
                     onPress={()=>navigation.navigate('Board')}
                 />
-              </View>
+              </TouchableOpacity>
             )
           }}
       />
       <Stack.Screen
           name='Board'
           component={BoardScreen}
+          options={{headerShown: false}}
       />
       <Stack.Screen
           name='Detail'
@@ -175,7 +176,7 @@ const AppStack = ({navigation}) => {
     <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: '#81c25f',
-          // headerShown: false
+          headerShown: false
         }}
     >
       <Tab.Screen 
