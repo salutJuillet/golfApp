@@ -18,6 +18,7 @@ const CarouselCourse = () => {
 
   const onViewableItemsChanged = useRef(({viewableItems})=>{
     currentSlideIndex = viewableItems[0]?.index || 0;
+    // console.log(currentSlideIndex);
     setVisibleSlideIndex(currentSlideIndex);
   });
 
@@ -32,7 +33,7 @@ const CarouselCourse = () => {
   }
 
   const startSlider = () => {
-    if(currentSlideIndex <= dataToRender.length - 2) {
+    if(currentSlideIndex <= dataToRender.length - 2) { //마지막 번호까지 갔을 때
         intervalId = setInterval(()=>{
             flatList.current.scrollToIndex({
                 animated: true,
@@ -66,7 +67,7 @@ const CarouselCourse = () => {
         handleScrollTo(1);
     }
     //마지막 페이지 리셋
-    if(visibleSlideIndex === 9 && length) {
+    if(visibleSlideIndex === 0 && length) {
         handleScrollTo(length - 2);
     }
     const lastSlide = currentSlideIndex === length - 1;
