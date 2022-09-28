@@ -35,7 +35,9 @@ const DetailDataScreen = ({route}) => {
                     <Text style={sty.sub}>{address}</Text>
                     </View>
                     <View>
-                    <Text style={[sty.dday, {backgroundColor: bgColor,}]}>D-{dday === 0 ? 'DAY' : dday}</Text>
+                    <Text style={[sty.dday, {backgroundColor: bgColor,}]}>
+                        {dday < 0 ? 'D+' + Math.abs(dday) : dday === 0? 'D-Day' : 'D-' + dday}
+                    </Text>
                     </View>
                 </View>
                 <View style={sty.footer}>

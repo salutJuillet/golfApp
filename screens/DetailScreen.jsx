@@ -86,7 +86,7 @@ const DetailScreen = ({navigation, route}) => {
           paddingHorizontal:20, 
           paddingBottom:15,
           alignItems:'flex-end',
-          marginTop:15,
+          marginTop:10,
           marginBottom:-10
         }}
       >
@@ -98,7 +98,8 @@ const DetailScreen = ({navigation, route}) => {
             backgroundColor:'#fff',
             borderWidth:2,
             borderColor:'#B7E49F',
-            borderRadius:8
+            borderRadius:8,
+            marginBottom:5
           }}
         >
           <Text>전체보기</Text>

@@ -181,8 +181,8 @@ const HomeScreen = ({navigation}) => {
                   borderWidth:2,
                   borderColor:'#B7E49F',
                   borderRadius:8,
-                  marginTop:-15,
-                  marginBottom:-10
+                  marginTop:-20,
+                  marginBottom:-5
                 }}
               >
                 <Text>날짜별보기</Text>

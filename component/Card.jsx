@@ -19,7 +19,7 @@ const Card = ({navigation, course, address, membercount, mcount, money, sdate, e
   const betweenDay = (fDate, sDate) => {
     let fDateObj = new Date(fDate.substring(0,4), fDate.substring(5,7)-1, fDate.substring(8,10));
     let sDateObj = new Date(sDate.substring(0,4), sDate.substring(5,7)-1, sDate.substring(8,10));
-    const betweenTime = Math.abs(sDateObj.getTime() - fDateObj.getTime());
+    const betweenTime = sDateObj.getTime() - fDateObj.getTime();
     return Math.floor(betweenTime / (1000 * 60 * 60 * 24));
   }
 
@@ -27,7 +27,7 @@ const Card = ({navigation, course, address, membercount, mcount, money, sdate, e
     setDday(betweenDay(now, actDate));
   }, []);
 
-  let bgColor = dday < 3 ? '#ef6464' : '#00acee';
+  let bgColor = dday < 0 ? '#aaa' : dday >= 0 && dday <= 3 ? '#ef6464' : '#00acee';
 
 
   return (
@@ -59,7 +59,9 @@ const Card = ({navigation, course, address, membercount, mcount, money, sdate, e
               <Text style={sty.sub}>{spAddr} | 남은 인원 ({restNumber}명)</Text>
             </View>
             <View>
-              <Text style={[sty.dday, {backgroundColor: bgColor,}]}>D-{dday === 0 ? 'DAY' : dday}</Text>
+              <Text style={[sty.dday, {backgroundColor: bgColor,}]}>
+                {dday < 0 ? 'D+' + Math.abs(dday) : dday === 0? 'D-Day' : 'D-' + dday}
+              </Text>
             </View>
           </View>
           <View style={sty.footer}>
@@ -76,7 +78,7 @@ const sty = StyleSheet.create({
   card:{
     backgroundColor:'#ffffff',
     width,
-    marginVertical:10,
+    marginBottom:20,
     padding:20,
   },
   container:{
