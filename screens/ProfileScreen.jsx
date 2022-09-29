@@ -12,6 +12,7 @@ const width = Dimensions.get('window').width;
 const ProfileScreen = ({navigation, route}) => {
 
   const { user, logout} = useContext(AuthContext);
+  let createTime;
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +57,12 @@ const ProfileScreen = ({navigation, route}) => {
                      })
   }
 
+  if(userData){
+    const tstamp = userData.createAt.seconds;
+    let date = new Date(tstamp * 1000);
+    createTime = `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분`;
+  }
+
   useEffect(()=>{
     getUser();
     navigation.addListener('focus', ()=>setLoading(!loading));
@@ -91,6 +98,7 @@ const ProfileScreen = ({navigation, route}) => {
                 <Text style={sty.userInfo}>{userData && userData.gender ? '남성' : '여성'}</Text>
                 <Text style={sty.userInfo}>{userData && userData.average}</Text>
                 <Text style={sty.userInfo}>{userData && userData.tel}</Text>
+                <Text style={sty.userInfo}>{createTime}</Text>
               </View>
             </View>
           )

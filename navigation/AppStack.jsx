@@ -68,7 +68,7 @@ const FeedStack = ({navigation}) => {
       <Stack.Screen
           name='Board'
           component={BoardScreen}
-          options={{headerShown: false}}
+          options={{headerTitle:'그룹 개설'}}
       />
       <Stack.Screen
           name='Detail'

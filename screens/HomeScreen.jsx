@@ -163,7 +163,7 @@ const HomeScreen = ({navigation}) => {
               backgroundColor: '#f2f2f2'
             }}
           >
-            <CarouselCourse />
+            {/* <CarouselCourse /> */}
             <View 
               style={{
                 width:'100%',

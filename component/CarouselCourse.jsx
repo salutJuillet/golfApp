@@ -50,7 +50,7 @@ const CarouselCourse = () => {
   }
 
   useEffect(()=>{
-    if(dataToRender.length && flatList.current) {
+    if(dataToRender.length && flatList.current && typeof flatList.current.scrollToIndex ==='function') {
         startSlider();
     }
   }, [dataToRender.length]);

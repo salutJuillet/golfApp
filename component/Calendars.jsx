@@ -15,7 +15,7 @@ LocaleConfig.defaultLocale = 'kr';
 
 const Calendars = () => {
 
-
+  // console.log(new Date().toDateString());
 
   return (
     <Calendar
