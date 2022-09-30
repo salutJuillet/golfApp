@@ -16,9 +16,11 @@ const EndTimePicker = ({insertData, setInsertData}) => {
   } 
 
   const onConfirm = (selectedDate) => {
+    const edate = format(selectedDate, 'yyyy-MM-dd HH:mm');
+
     setVisible(false);
     setEdDate(selectedDate);
-    setInsertData({...insertData, edate: edDate});
+    setInsertData({...insertData, edate});
   }
   
   const onCancel = () => {

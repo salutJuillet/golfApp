@@ -16,9 +16,11 @@ const StartTimePicker = ({insertData, setInsertData}) => {
   } 
 
   const onConfirm = (selectedDate) => {
+    const sdate = format(selectedDate, 'yyyy-MM-dd HH:mm');
+
     setVisible(false);
     setStDate(selectedDate);
-    setInsertData({...insertData, sdate: stDate});
+    setInsertData({...insertData, sdate});
   }
   
   const onCancel = () => {

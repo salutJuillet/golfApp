@@ -12,68 +12,6 @@ import { FlatList } from 'react-native-gesture-handler'
 
 const width = Dimensions.get('window').width;
 
-const posts = [
-  {
-    id: 1, 
-    admin: 'John Doe', 
-    src: require('../assets/members/ponyo001.jpg'), 
-    postTime: '5분 전', 
-    post: '00골프장에서 골프치실 분~',
-    pdate: '2022.12.10 10시 - 16시',
-    liked: 6,
-    likes: 3,
-    members: '철수, 영희, 순이'
-  },
-  {
-    id: 2, 
-    admin: 'D', 
-    src: require('../assets/members/ponyo002.jpg'), 
-    postTime: '15분 전', 
-    post: '00골프장에서 골프치실?',
-    pdate: '2022.12.10 10시 - 16시',
-    liked: 6,
-    likes: 3,
-    members: '철, 영, 순'
-  },
-  {
-    id:3, 
-    admin: 'Joe', 
-    src: require('../assets/members/ponyo003.jpg'), 
-    postTime: '5분 전', 
-    post: '00골프장에서 골프치실 분~',
-    pdate: '2022.12.10 10시 - 16시',
-    liked: 6,
-    likes: 3,
-    members: '수, 희, 이'
-  },
-  {
-    id: 4, 
-    admin: 'Joho', 
-    src: require('../assets/members/ponyo004.jpg'), 
-    postTime: '24분 전', 
-    post: '00골프장 골프',
-    pdate: '2022.12.10 10시 - 16시',
-    liked: 6,
-    likes: 3,
-    members: '철수, 영희, 순이'
-  },
-  {
-    id: 5, 
-    admin: 'no', 
-    src: require('../assets/members/ponyo005.jpg'), 
-    postTime: '5분 전', 
-    post: '00골프장에서 골프치실 분~',
-    pdate: '2022.12.10 10시 - 16시',
-    liked: 6,
-    likes: 3,
-    members: '철수, 영희, 순이'
-  }
-]
-
-
-const ListHeader = () => {
-  return null;
-}
 
 const HomeScreen = ({navigation}) => {
 
@@ -85,19 +23,19 @@ const HomeScreen = ({navigation}) => {
     setDatas(data);
   },[]);
 
-  const fetchPosts = async () => {
-    try{
-      const list = [];
-      await firestore().collection('posts')
-                       .orderBy('postTime', 'desk')
-                       .get()
-                       .then((querySnapShot)=>{
-                        console.log('Total Posts: ', querySnapShot.size)
-                       })
-    }catch(e){
-      console.log(e)
-    }
-  }
+  // const fetchPosts = async () => {
+  //   try{
+  //     const list = [];
+  //     await firestore().collection('posts')
+  //                      .orderBy('postTime', 'desk')
+  //                      .get()
+  //                      .then((querySnapShot)=>{
+  //                       console.log('Total Posts: ', querySnapShot.size)
+  //                      })
+  //   }catch(e){
+  //     console.log(e)
+  //   }
+  // }
 
   const vLists = ({item}) => (
     <View style={{justifyContent:'center', alignItems:'center'}}>
@@ -163,13 +101,13 @@ const HomeScreen = ({navigation}) => {
               backgroundColor: '#f2f2f2'
             }}
           >
-            {/* <CarouselCourse /> */}
+            <CarouselCourse />
             <View 
               style={{
                 width:'100%',
                 paddingHorizontal:20, 
                 paddingBottom:15,
-                alignItems:'flex-end'
+                alignItems:'flex-end',
               }}
             >
               <TouchableOpacity 
@@ -181,14 +119,14 @@ const HomeScreen = ({navigation}) => {
                   borderWidth:2,
                   borderColor:'#B7E49F',
                   borderRadius:8,
-                  marginTop:-20,
+                  marginTop:10,
                   marginBottom:-5
                 }}
               >
                 <Text>날짜별보기</Text>
               </TouchableOpacity>
             </View>
-            <View>
+            <View style={{flex:1}}>
               <FlatList
                 data={datas}
                 key={item => item.id}

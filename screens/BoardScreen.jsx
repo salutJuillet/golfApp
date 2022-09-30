@@ -10,7 +10,6 @@ import LocalName from '../component/LocalName'
 import CourseName from '../component/CourseName'
 import StartTimePicker from '../component/StartTimePicker'
 import EndTimePicker from '../component/EndTimePicker'
-import Calendars from '../component/Calendars'
 
 
 const width = Dimensions.get('window').width;
@@ -27,6 +26,7 @@ const BoardScreen = ({navigation}) => {
     zipcode: '',
     course: '',
     address: '',
+    tel:'',
     money: '',
     membercount: '0',
     mchar: 'b',
@@ -35,8 +35,7 @@ const BoardScreen = ({navigation}) => {
   });
   const [course, setCourse] = useState([]);
   const [newCourse, setNewCourse] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [buttonColor, setButtonColor] = useState(['#B7E49F', '#B7E49F', '#B7E49F']);
+  const [buttonColor, setButtonColor] = useState(['#ffffff', '#ffffff', '#ffffff']);
 
 
   const onPressMinus = () => {
@@ -45,7 +44,7 @@ const BoardScreen = ({navigation}) => {
   }
   const onPressPlus = () => {
     let newMembercount = parseInt(insertData.membercount) +1;
-    setInsertData({...insertData, membercount: newMembercount});
+    setInsertData({...insertData, membercount: newMembercount.toString()});
   }
   const onChangeMembercount = (text) => {
     setInsertData({...insertData, membercount: text.toString()});
@@ -54,24 +53,26 @@ const BoardScreen = ({navigation}) => {
   const selectGender = (e) => {
     let colors = [];
     if(e===1){
-       colors = ['#B7E49F', '#81C25F', '#B7E49F'];
+       colors = ['#ffffff', '#B7E49F', '#ffffff'];
        setInsertData({...insertData, mchar:'f'});
     }else if(e===2){
-       colors = ['#B7E49F', '#B7E49F', '#81C25F'];
+       colors = ['#ffffff', '#ffffff', '#B7E49F'];
        setInsertData({...insertData, mchar:'m'});
     }else{
-       colors = ['#81C25F', '#B7E49F', '#B7E49F'];
+       colors = ['#B7E49F', '#ffffff', '#ffffff'];
        setInsertData({...insertData, mchar:'b'});
     }
     setButtonColor(colors)
   }
 
-  const handleCourse = () => {
+  const handleCourse = (index) => {
     setInsertData({...insertData, 
       course: newCourse.coursename,
       address: newCourse.address01 ? newCourse.address01 : newCourse.address02,
       zipcode: newCourse.zipcode01 ? newCourse.zipcode01 : newCourse.zipcode02,
-    })
+      tel: newCourse.tel
+    });
+    console.log(index);
   } 
 
   const onChangeMoney = (text) => {
@@ -80,7 +81,6 @@ const BoardScreen = ({navigation}) => {
 
   useEffect(()=>{
     console.log(insertData);
-    console.log(user.fname);
   }, [insertData])
 
   const getCourse = (zone) => {
@@ -126,19 +126,10 @@ const BoardScreen = ({navigation}) => {
           cornerRadius={15}
           style={sty.card}
       >  
-        <TouchableOpacity onPress={()=>{setNewCourse({...item}); handleCourse();}}>
+        <TouchableOpacity onPress={(index)=>{setNewCourse({...item}); handleCourse(index);}}>
           <View style={sty.cardContainer}>
             <View>
               <Text style={sty.title}>{item.coursename}</Text>
-              {/* <Text style={sty.sub}>
-                { 
-                  !item.zipcode01 && !item.zipcode02 
-                  ? '' 
-                  : item.zipcode01 
-                    ? '(' + item.zipcode01 + ')'
-                    : '(' + item.zipcode02 + ')'
-                }
-              </Text> */}
               <Text style={sty.sub}>
                 {item.address02 ? item.address02 : item.address01}
               </Text>
@@ -247,7 +238,7 @@ const BoardScreen = ({navigation}) => {
         {/* 선택된 골프장 리스트 출력 */}
         {
           insertData.sdate && insertData.edate && insertData.membercount > 0 && insertData.mchar && insertData.money && (
-            <View style={{alignItems:'center', paddingTop:20}}>
+            <View style={{alignItems:'center', paddingTop:20, flex:1}}>
               <FlatList
                   data={course}
                   renderItem={viewCourse}
@@ -266,7 +257,7 @@ export default BoardScreen
 
 const sty = StyleSheet.create({
   container:{
-    padding:10,
+    paddingHorizontal:10,
     flex:1,
     alignItems:'center'
   },
@@ -305,7 +296,7 @@ const sty = StyleSheet.create({
     paddingVertical:4,
     paddingHorizontal:7,
     borderRadius:5,
-    elevation:1
+    elevation:1,
   },
   genderButtonText:{
     fontWeight:'bold',
@@ -335,42 +326,22 @@ const sty = StyleSheet.create({
     marginHorizontal:20,
     marginBottom:20,
   },
+  cardPressed:{
+    backgroundColor:'#B7E49F',
+    width: width - 40,
+    padding:20,
+    marginHorizontal:20,
+    marginBottom:20,
+  },
+  cardHidden:{
+    width:0,
+    height:0,
+    overflow:'hidden'
+  },
   cardContainer:{
     flexDirection:'row',
     justifyContent:'space-between',
     alignItems:'center',
-    paddingBottom:10,
-  },
-  courseInfoContainer:{
-    backgroundColor:'#fff',
-    borderRadius:8,
-    elevation:7,
-    overflow:'hidden',
-    width: width - 40,
-    padding:20,
-    marginBottom:20
-  },
-  courseImage:{
-      width:'100%',
-      objectFit:'cover'
-  },
-  conditionContainer:{
-      backgroundColor:'#fff',
-      borderRadius:8,
-      elevation:7,
-      overflow:'hidden',
-      width: width - 40,
-      padding:20,
-      marginBottom:20
-  },
-  infoContainer:{
-      flexDirection:'row',
-      justifyContent:'space-between',
-      alignItems:'center',
-      borderBottomWidth:1,
-      borderBottomColor:'#ddd',
-      marginBottom:10,
-      paddingBottom:10
   },
   title:{
       fontSize:25,
