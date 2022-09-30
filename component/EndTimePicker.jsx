@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 // import ko from 'date-fns/esm/locale/ko'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
-const EndTimePicker = () => {
+const EndTimePicker = ({insertData, setInsertData}) => {
   
   const [edDate, setEdDate] = useState(new Date());
   const [mode, setMode] = useState('date'); //팝업창 종류
@@ -18,6 +18,7 @@ const EndTimePicker = () => {
   const onConfirm = (selectedDate) => {
     setVisible(false);
     setEdDate(selectedDate);
+    setInsertData({...insertData, edate: edDate});
   }
   
   const onCancel = () => {

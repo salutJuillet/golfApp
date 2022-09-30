@@ -11,7 +11,6 @@ import CourseName from '../component/CourseName'
 import StartTimePicker from '../component/StartTimePicker'
 import EndTimePicker from '../component/EndTimePicker'
 import Calendars from '../component/Calendars'
-import { FormInput } from '../component/FormInput'
 
 
 const width = Dimensions.get('window').width;
@@ -29,9 +28,9 @@ const BoardScreen = ({navigation}) => {
     course: '',
     address: '',
     money: '',
-    membercount: '',
+    membercount: '0',
     mchar: 'b',
-    mcount: '1',
+    mcount: '0',
     member: [user.uid]
   });
   const [course, setCourse] = useState([]);
@@ -39,19 +38,17 @@ const BoardScreen = ({navigation}) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [buttonColor, setButtonColor] = useState(['#B7E49F', '#B7E49F', '#B7E49F']);
 
-  const handleMcount = (e, operator) => {
-    let newMcount;
-    switch(operator) {
-      case 'minus':
-        newMcount = e.target.value - 1;
-        if(newMcount < 1) newMcount = 1;
-        setInsertData({...insertData, mcount: newMcount.toString()});
-        return;
-      case 'plus':
-        newMcount = e.target.value + 1;
-        setInsertData({...insertData, mcount: newMcount.toString()});
-        return;
-    }
+
+  const onPressMinus = () => {
+    let newMembercount = parseInt(insertData.membercount) -1;
+    setInsertData({...insertData, membercount: newMembercount < 0 ? '0' : newMembercount.toString()});
+  }
+  const onPressPlus = () => {
+    let newMembercount = parseInt(insertData.membercount) +1;
+    setInsertData({...insertData, membercount: newMembercount});
+  }
+  const onChangeMembercount = (text) => {
+    setInsertData({...insertData, membercount: text.toString()});
   }
 
   const selectGender = (e) => {
@@ -76,6 +73,15 @@ const BoardScreen = ({navigation}) => {
       zipcode: newCourse.zipcode01 ? newCourse.zipcode01 : newCourse.zipcode02,
     })
   } 
+
+  const onChangeMoney = (text) => {
+    setInsertData({...insertData, money: text.toString()})
+  }
+
+  useEffect(()=>{
+    console.log(insertData);
+    console.log(user.fname);
+  }, [insertData])
 
   const getCourse = (zone) => {
     db.transaction(txn => {
@@ -162,29 +168,29 @@ const BoardScreen = ({navigation}) => {
           {/* 시작일시선택 */}
           <View style={[sty.formGroup, sty.borderBottomDashed]}>
             <Text style={sty.label}>시작일시</Text>
-            <StartTimePicker />
+            <StartTimePicker insertData={insertData} setInsertData={setInsertData} />
           </View>
 
           {/* 마침일시선택 */}
           <View style={[sty.formGroup, sty.borderBottomDashed]}>
             <Text style={sty.label}>마침일시</Text>
-            <EndTimePicker />
+            <EndTimePicker insertData={insertData} setInsertData={setInsertData} />
           </View>
 
           {/* 인원선택 */}
           <View style={[sty.formGroup, sty.borderBottomDashed]}>
             <Text style={sty.label}>최대 인원수</Text>
             <View style={{flexDirection:'row', flex:1, justifyContent:'center', alignItems:'center'}}>
-              <TouchableOpacity onPress={e=>handleMcount('minus',e)}>
+              <TouchableOpacity onPress={onPressMinus}>
                 <AntDesign name='minus' size={20} color='#666' />
               </TouchableOpacity>
               <TextInput 
                 type='text' 
-                value={insertData.mcount} 
-                // onChange={onChangeMcount}
-                keyboardType='number-pad'
+                value={insertData.membercount} 
+                onChangeText={(text)=>onChangeMembercount(text)}
+                keyboardType='numeric'
                 style={{backgroundColor:'#fff',borderRadius:5, textAlign:'center', marginHorizontal:5}} />
-              <TouchableOpacity onPress={e=>handleMcount('plus', e)}>
+              <TouchableOpacity onPress={onPressPlus}>
                 <AntDesign name='plus' size={20} color='#666' />
               </TouchableOpacity>
             </View>
@@ -228,6 +234,7 @@ const BoardScreen = ({navigation}) => {
               </View>
               <TextInput 
                   value={insertData.money}
+                  onChangeText={text=>onChangeMoney(text)}
                   numberOfLines={1}
                   keyboardType='numeric'
                   style={sty.moneyInput}
@@ -238,13 +245,17 @@ const BoardScreen = ({navigation}) => {
         {/* </View> */}
 
         {/* 선택된 골프장 리스트 출력 */}
-        <View style={{alignItems:'center', paddingTop:20}}>
-          <FlatList
-              data={course}
-              renderItem={viewCourse}
-              keyExtractor={item=>item.id}  
-          />
-        </View>
+        {
+          insertData.sdate && insertData.edate && insertData.membercount > 0 && insertData.mchar && insertData.money && (
+            <View style={{alignItems:'center', paddingTop:20}}>
+              <FlatList
+                  data={course}
+                  renderItem={viewCourse}
+                  keyExtractor={item=>item.id}  
+              />
+            </View>
+          )
+        }
       </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
