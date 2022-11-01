@@ -9,14 +9,14 @@
 # Golf App
 
 <div align="center">
-  <img src="assets/images/preview01.jpg" width="250px"/>  
-  <img src="assets/images/preview02.jpg" width="250px"/>
-  <img src="assets/images/preview03.jpg" width="250px"/>
-  <img src="assets/images/preview04.jpg" width="250px"/>  
-  <img src="assets/images/preview05.jpg" width="250px"/>
-  <img src="assets/images/preview06.jpg" width="250px"/>
-  <img src="assets/images/preview07.jpg" width="250px"/>
-  <img src="assets/images/preview08.jpg" width="250px"/>
+  <img src="assets/images/preview01.jpg" width="200px"/>  
+  <img src="assets/images/preview02.jpg" width="200px"/>
+  <img src="assets/images/preview03.jpg" width="200px"/>
+  <img src="assets/images/preview04.jpg" width="200px"/>  
+  <img src="assets/images/preview05.jpg" width="200px"/>
+  <img src="assets/images/preview06.jpg" width="200px"/>
+  <img src="assets/images/preview07.jpg" width="200px"/>
+  <img src="assets/images/preview08.jpg" width="200px"/>
 </div>
 
 <br/>
