@@ -57,10 +57,10 @@ const ProfileScreen = ({navigation, route}) => {
                      })
   }
 
-  if(userData){
-    const tstamp = userData.createAt.seconds;
-    let date = new Date(tstamp * 1000);
-    createTime = `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분`;
+  if(userData){console.log(userData.createAt);
+    // const tstamp = userData.createAt.seconds;
+    // let date = new Date(tstamp * 1000);
+    // createTime = `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분`;
   }
 
   useEffect(()=>{
@@ -87,18 +87,47 @@ const ProfileScreen = ({navigation, route}) => {
                      style={sty.userImg} 
               />
               <View style={sty.userInfoContainer}>
-                <View style={{flexDirection:'row', alignItems:'center', borderWidth:1}}>
+                <View style={{flexDirection:'row', alignItems:'center'}}>
                   <Image source={require('../assets/images/heels.png')}
                          style={sty.labelImage} />
                   <Text style={sty.userInfo}>이메일:  {userData && userData.email}</Text>
                 </View>
-                
-                <Text style={sty.userInfo}>{userData && userData.age}</Text>
-                <Text style={sty.userInfo}>{userData && userData.fname}</Text>
-                <Text style={sty.userInfo}>{userData && userData.gender ? '남성' : '여성'}</Text>
-                <Text style={sty.userInfo}>{userData && userData.average}</Text>
-                <Text style={sty.userInfo}>{userData && userData.tel}</Text>
-                <Text style={sty.userInfo}>{createTime}</Text>
+
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                  <Image source={require('../assets/images/heels.png')}
+                         style={sty.labelImage} />
+                  <Text style={sty.userInfo}>별명:  {userData && userData.fname}</Text>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                  <Image source={require('../assets/images/heels.png')}
+                         style={sty.labelImage} />
+                  <Text style={sty.userInfo}>나이:  {userData && userData.age}세</Text>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                  <Image source={require('../assets/images/heels.png')}
+                         style={sty.labelImage} />
+                  <Text style={sty.userInfo}>평균:  {userData && userData.average}</Text>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                  <Image source={require('../assets/images/heels.png')}
+                         style={sty.labelImage} />
+                  <Text style={sty.userInfo}>성별:  {userData && userData.gender ? '남성' : '여성'}</Text>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                  <Image source={require('../assets/images/heels.png')}
+                         style={sty.labelImage} />
+                  <Text style={sty.userInfo}>전화번호:  {userData && userData.tel}</Text>
+                </View>
+
+                {/* <View style={{flexDirection:'row', alignItems:'center'}}>
+                  <Image source={require('../assets/images/heels.png')}
+                         style={sty.labelImage} />
+                  <Text style={sty.userInfo}>가입일:  {createTime}</Text>
+                </View> */}
               </View>
             </View>
           )
