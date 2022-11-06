@@ -133,11 +133,11 @@ const ProfileScreen = ({navigation, route}) => {
           )
         }
 
-        <FormButton
+        {/* <FormButton
           buttonTitle='프로필 수정'
           backgroundColor='#B7E49F'
           onPress={()=>navigation.navigate('EditProfile')}
-        />
+        /> */}
         <FormButton
           buttonTitle='로그아웃'
           backgroundColor='#B7E49F'
